@@ -2,8 +2,13 @@ let currentTab = 'all';
 const tabActive = ['bg-navy', 'border-navy','text-white'];
 const tabInactive = ['bg-transparent', 'text-slate-700', 'border-slate-200', 'text-black'];
 
+const allContainer = document.getElementById('all-container');
+const interviewContainer = document.getElementById('interview-container');
+const rejectedContainer = document.getElementById('reject-container');
+
+
+
 function switchTab(tab){
-    console.log(tab);
     const tabs = ['all', 'interview', 'rejected'];
     for(const t of tabs){
         const tabName = document.getElementById('tab-'+t);
@@ -17,5 +22,21 @@ function switchTab(tab){
         }
         
     }
+
+    const pages = [allContainer, interviewContainer, rejectedContainer];
+    for(const section of pages){
+        section.classList.add('hidden');
+    }
+
+    if(tab === 'all'){
+        allContainer.classList.remove('hidden');
+    }
+    else if(tab === 'interview'){
+        interviewContainer.classList.remove('hidden');
+    }
+    else{
+        rejectedContainer.classList.remove('hidden');
+    }
     
 }
+switchTab(currentTab);
