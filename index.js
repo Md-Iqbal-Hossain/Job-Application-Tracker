@@ -10,6 +10,7 @@ const emptyState = document.getElementById('empty-state');
 
 function switchTab(tab){
     const tabs = ['all', 'interview', 'rejected'];
+    currentTab = tab;
     for(const t of tabs){
         const tabName = document.getElementById('tab-'+t);
         if(t === tab){
@@ -48,6 +49,8 @@ function switchTab(tab){
             emptyState.classList.remove('hidden');
         }
     }
+
+    updateStat();
     
 }
 
@@ -55,6 +58,7 @@ function switchTab(tab){
 const totalStat = document.getElementById('stat-total');
 const interviewStat = document.getElementById('stat-interview');
 const rejectStat = document.getElementById('stat-reject');
+const availableStat = document.getElementById('available');
 
 totalStat.innerText = allContainer.children.length;
 
@@ -70,31 +74,38 @@ document.getElementById("jobs-container").addEventListener('click', function(eve
     if(clickedElement.classList.contains('interview')){
         status.innerText = 'Interviewed';
         interviewContainer.appendChild(card);
-        updateStat();
+        // updateStat();
     }
     if(clickedElement.classList.contains('rejected')){
         status.innerText = 'Rejected';
         rejectedContainer.appendChild(card);
-        updateStat();
+        // updateStat();
     }
     if(clickedElement.classList.contains('delete')){
           parent.removeChild(card);
-          updateStat();
+        //   updateStat();
     }
+    updateStat();
 })
 
 function updateStat(){
-    // totalStat.innerHTML = allContainer.children.length;
-    // interviewStat.innerText = interviewContainer.children.length;
-    // rejectStat.innerText = rejectedContainer.children.length;
-
     const counts = {
         all: allContainer.children.length,
         interview: interviewContainer.children.length,
         rejected: rejectedContainer.children.length
     }
 
-    totalStat.innerHTML = counts['all'];
-    interviewStat.innerHTML = counts['interview'];
-    rejectStat.innerHTML = counts['rejected'];
+    totalStat.innerHTML = counts.all;
+    interviewStat.innerHTML = counts.interview;
+    rejectStat.innerHTML = counts.rejected;
+
+    availableStat.innerText = counts[currentTab];
+
+    if(counts[currentTab] < 1){
+        emptyState.classList.remove('hidden');
+    }
+    else{
+        emptyState.classList.add('hidden');
+    }
 }
+updateStat();
