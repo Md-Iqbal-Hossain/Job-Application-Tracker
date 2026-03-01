@@ -6,7 +6,7 @@ const allContainer = document.getElementById('all-container');
 const interviewContainer = document.getElementById('interview-container');
 const rejectedContainer = document.getElementById('reject-container');
 
-
+const emptyState = document.getElementById('empty-state');
 
 function switchTab(tab){
     const tabs = ['all', 'interview', 'rejected'];
@@ -28,14 +28,25 @@ function switchTab(tab){
         section.classList.add('hidden');
     }
 
+    emptyState.classList.add('hidden');
+
     if(tab === 'all'){
         allContainer.classList.remove('hidden');
+        if(allContainer.children.length < 1){
+            emptyState.classList.remove('hidden');
+        }
     }
     else if(tab === 'interview'){
         interviewContainer.classList.remove('hidden');
+        if(interviewContainer.children.length < 1){
+            emptyState.classList.remove('hidden');
+        }
     }
     else{
         rejectedContainer.classList.remove('hidden');
+        if(rejectedContainer.children.length < 1){
+            emptyState.classList.remove('hidden');
+        }
     }
     
 }
@@ -59,13 +70,31 @@ document.getElementById("jobs-container").addEventListener('click', function(eve
     if(clickedElement.classList.contains('interview')){
         status.innerText = 'Interviewed';
         interviewContainer.appendChild(card);
+        updateStat();
     }
     if(clickedElement.classList.contains('rejected')){
         status.innerText = 'Rejected';
         rejectedContainer.appendChild(card);
+        updateStat();
     }
     if(clickedElement.classList.contains('delete')){
           parent.removeChild(card);
+          updateStat();
     }
-    
 })
+
+function updateStat(){
+    // totalStat.innerHTML = allContainer.children.length;
+    // interviewStat.innerText = interviewContainer.children.length;
+    // rejectStat.innerText = rejectedContainer.children.length;
+
+    const counts = {
+        all: allContainer.children.length,
+        interview: interviewContainer.children.length,
+        rejected: rejectedContainer.children.length
+    }
+
+    totalStat.innerHTML = counts['all'];
+    interviewStat.innerHTML = counts['interview'];
+    rejectStat.innerHTML = counts['rejected'];
+}
